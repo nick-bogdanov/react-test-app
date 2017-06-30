@@ -4,7 +4,7 @@ import { Col } from 'react-bootstrap'
 export class Post extends Component {
     render() {
         return (
-            <Col xs='6'>
+            <Col xs={6}>
                 <h3>{this.props.post.title}</h3>
                 <div>{this.props.post.body}</div>
                 <hr/>

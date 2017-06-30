@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { City } from './City'
+import City from './City'
 import { Company } from './Company'
 import { Search } from './Search'
 import { SortBy } from './SortBy'
 import { Col } from 'react-bootstrap'
-
-import * as users from '../../../data/users.json'
 
 import './style.css'
 
@@ -17,10 +15,10 @@ export class Filter extends Component {
                     <SortBy />
                 </Col>
                 <Col xs={3}>
-                    <City users={users} />
+                    <City />
                 </Col>
                 <Col xs={4}>
-                    <Company users={users} />
+                    <Company users={[]} />
                 </Col>
                 <Col xs={2}>
                     <Search />

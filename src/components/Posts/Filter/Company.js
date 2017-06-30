@@ -9,7 +9,7 @@ export class Company extends Component {
     }
 
     render() {
-        const options = uniqueOptions(this.props.users, 'company', 'name')
+        const options = uniqueOptions('company', 'name')
         return (
             <FormGroup>
                 <label>Filter by Company</label>
