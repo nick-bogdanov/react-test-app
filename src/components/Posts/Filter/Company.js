@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { FormGroup } from 'react-bootstrap'
 import { uniqueOptions } from './uniqueOptions'
 
-
 export class Company extends Component {
 
     onChange = () => {

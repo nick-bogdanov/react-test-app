@@ -4,7 +4,7 @@ export function uniqueOptions(users, object, data) {
     })
 
     const uniqueCityes = allCityes.filter(function (elem, index, self) {
-        return index == self.indexOf(elem);
+        return index === self.indexOf(elem);
     })
 
     return uniqueCityes

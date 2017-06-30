@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import { FormGroup } from 'react-bootstrap'
-import { uniqueOptions } from './uniqueOptions'
-
-import * as users from '../../../data/users.json'
 
 export class SortBy extends Component {
 
@@ -11,7 +8,6 @@ export class SortBy extends Component {
     }
 
     render() {
-        const options = uniqueOptions(users, 'address', 'city')
         return (
             <FormGroup>
                 <label>Sort By</label>

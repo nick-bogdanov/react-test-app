@@ -8,7 +8,7 @@ export class User extends Component {
         const user = this.props.user
         return (
             <article>
-                <Col xs={12} md={4}>
+                <Col xs='12' md='4'>
                     <div className="user-box">
                         <h2>{user.name}</h2>
                         <h3><a href={"mailto:" + user.email}>{user.email}</a></h3>

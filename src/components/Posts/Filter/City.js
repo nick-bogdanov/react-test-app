@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { FormGroup } from 'react-bootstrap'
 import { uniqueOptions } from './uniqueOptions'
 
-import * as users from '../../../data/users.json'
-
 export class City extends Component {
 
     onChange = () => {
