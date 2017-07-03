@@ -1,0 +1,10 @@
+.post-box {
+    color: white;
+    background: -webkit-linear-gradient(left, #363795, #005C97);
+    background: -moz-linear-gradient(left, #363795, #005C97);
+    background: -o-linear-gradient(left, #363795, #005C97);
+    background: linear-gradient(to right, #363795, #005C97);
+    margin-bottom:20px;
+    height:300px;
+    padding:20px;
+}

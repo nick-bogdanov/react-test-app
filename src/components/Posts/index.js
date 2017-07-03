@@ -54,31 +54,80 @@ export class Posts extends Component {
     }
 
     Posts() {
-        let users = this._createPostWithUserInfo()
+        let posts = this._createPostWithUserInfo()
         // if we come in the first time, silently return posts, merged with user info
         if (this.state.init) {
-            return users
+            return posts
         }
 
+        // filter by search term
+        posts = this._filterUsers(posts, this.state.term, 'title')
         // filter by city
-        users = this._filterUsers(users, this.state.filter.city, 'address', 'city')
+        posts = this._filterUsers(posts, this.state.filter.city, 'address', 'city')
         // filter by company
-        users = this._filterUsers(users, this.state.filter.company, 'company', 'name')
-        console.log(users)
+        posts = this._filterUsers(posts, this.state.filter.company, 'company', 'name')
+        // sort filtered results
+        posts = this._sortUsers(posts, this.state.sortBy)
+        console.log(posts)
 
-        return users
+        return posts
 
     }
 
-    _filterUsers(users, find, ...terms) {
-        console.log(terms)
+    _sortUsers(posts, sortTerm) {
+
+        if (sortTerm && sortTerm !== 'all') {
+            switch (sortTerm) {
+                case 'author':
+                    return posts.sort(sortByTitle)
+                case 'city':
+                    return posts.sort(sortByCity)
+                case 'company':
+                    return posts.sort(sortByCompany)
+                default:
+                    return posts
+            }
+        } else {
+            return posts
+        }
+        
+        function sortByTitle(a, b) {
+            if (a.user.name < b.user.name)
+                return -1;
+            if (a.user.name > b.user.name)
+                return 1;
+            return 0;
+        }
+
+        function sortByCity(a, b) {
+            if (a.user.address.city < b.user.address.city)
+                return -1;
+            if (a.user.address.city > b.user.address.city)
+                return 1;
+            return 0;
+        }
+
+        function sortByCompany(a, b) {
+            if (a.user.company.name < b.user.company.name)
+                return -1;
+            if (a.user.company.name > b.user.company.name)
+                return 1;
+            return 0;
+        }
+    }
+
+    _filterUsers(posts, find, ...terms) {
         if (find && find !== 'all') {
-            const filtered = users.filter((post) => {
-                return post.user[terms[0]][terms[1]] === find
+            const filtered = posts.filter((post) => {
+                if (terms[0] !== 'title') {
+                    return post.user[terms[0]][terms[1]] === find
+                } else {
+                    return post.title.indexOf(find) !== -1
+                }
             })
             return filtered
         } else {
-            return users
+            return posts
         }
     }
 
