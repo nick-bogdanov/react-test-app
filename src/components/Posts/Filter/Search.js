@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { FormGroup, FormControl } from 'react-bootstrap'
+import * as _ from 'lodash'
 
 export class Search extends Component {
+
     onChange = (e) => {
         this.props.onSearch({
             term: e.target.value
@@ -10,9 +12,7 @@ export class Search extends Component {
 
     render() {
         return (
-            <FormGroup>
-                <FormControl type="text" onChange={this.onChange} placeholder="Search" />
-            </FormGroup>
+            <input type="text" placeholder='Search' onChange={this.onChange} />
         )
     }
 }

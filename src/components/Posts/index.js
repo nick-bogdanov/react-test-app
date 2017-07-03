@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Filter } from './Filter/'
 import { Post } from './Post'
+import { confirmAlert } from 'react-confirm-alert'
+import 'react-confirm-alert/src/react-confirm-alert.css'
 import * as _ from 'lodash'
 
 import * as users from '../../data/users.json'
@@ -10,15 +12,15 @@ export class Posts extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            // use init for first render
-            init: true,
             filter: {
                 city: null,
                 company: null
             },
             sortBy: null,
-            term: null
+            term: null,
+            posts: this._createPostWithUserInfo()
         }
+
     }
 
     onSearch = (results) => {
@@ -36,9 +38,24 @@ export class Posts extends Component {
             Object.assign(newState, results)
         }
 
-        this.setState(newState)
-        setTimeout(() => {
-            console.log(this.state)
+        this.updatePosts(newState)
+
+    }
+
+    removePost = (index, post) => {
+        confirmAlert({
+            title: 'Remove post',
+            message: 'Are you shure remove this post?',
+            confirmLabel: 'Remove',
+            cancelLabel: 'Nope',
+            onConfirm: () => {
+                // Remove from global posts collection
+                this._removePostFromCurrentCollection(post)
+                // remove from current state
+                let posts = this.state.posts.slice()
+                posts.splice(index, 1)
+                this.setState({ posts })
+            }
         })
     }
 
@@ -46,31 +63,30 @@ export class Posts extends Component {
         return (
             <div>
                 <Filter onSearch={this.onSearch} />
-                {this.Posts().map((post) =>
-                    <Post key={post.id.toString()} post={post}></Post>
+                <h3>Posts: {this.state.posts.length}</h3>
+                {this.state.posts.map((post, index) =>
+                    <Post key={post.id.toString()} onClick={this.removePost} index={index} post={post}></Post>
                 )}
             </div>
         )
     }
 
-    Posts() {
+    updatePosts(newState) {
         let posts = this._createPostWithUserInfo()
-        // if we come in the first time, silently return posts, merged with user info
-        if (this.state.init) {
-            return posts
-        }
-
         // filter by search term
-        posts = this._filterUsers(posts, this.state.term, 'title')
+        posts = this._filterUsers(posts, newState.term, 'title')
         // filter by city
-        posts = this._filterUsers(posts, this.state.filter.city, 'address', 'city')
+        posts = this._filterUsers(posts, newState.filter.city, 'address', 'city')
         // filter by company
-        posts = this._filterUsers(posts, this.state.filter.company, 'company', 'name')
+        posts = this._filterUsers(posts, newState.filter.company, 'company', 'name')
         // sort filtered results
-        posts = this._sortUsers(posts, this.state.sortBy)
-        console.log(posts)
+        posts = this._sortUsers(posts, newState.sortBy)
 
-        return posts
+        newState.posts = posts
+
+        this.setState(newState)
+
+        return this.state.posts
 
     }
 
@@ -90,7 +106,7 @@ export class Posts extends Component {
         } else {
             return posts
         }
-        
+
         function sortByTitle(a, b) {
             if (a.user.name < b.user.name)
                 return -1;
@@ -122,6 +138,7 @@ export class Posts extends Component {
                 if (terms[0] !== 'title') {
                     return post.user[terms[0]][terms[1]] === find
                 } else {
+                    console.log(find)
                     return post.title.indexOf(find) !== -1
                 }
             })
@@ -132,13 +149,17 @@ export class Posts extends Component {
     }
 
     _createPostWithUserInfo() {
+        if (this.posts) {
+            return this.posts
+        }
 
         const newPosts = _.cloneDeep(posts)
         newPosts.forEach(post => {
             post.user = this._getUserById(post.userId)
             return post
         })
-        return newPosts
+        this.posts = newPosts
+        return this.posts
     }
 
     _getUserById(id) {
@@ -149,5 +170,11 @@ export class Posts extends Component {
             }
         })
         return userData
+    }
+
+    _removePostFromCurrentCollection(post) {
+        console.log(this.posts)
+        const index = this.posts.indexOf(post)
+        this.posts.splice(index, 1)
     }
 }
