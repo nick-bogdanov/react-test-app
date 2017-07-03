@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import { FormGroup } from 'react-bootstrap'
 import { uniqueOptions } from './uniqueOptions'
-import { connect } from 'react-redux'
-import { filterByCity } from '../../../actions/filter'
 
-class City extends Component {
+export class City extends Component {
     constructor(props, a, b) {
         super(props)
-        console.log(props)
     }
 
     onChange = (e) => {
-        this.props.filterByCity(e.target.value)
+        this.props.onSearch({
+            filter: {
+                city: e.target.value
+            }
+        })
     }
 
     render() {
@@ -22,15 +23,10 @@ class City extends Component {
                 <select onChange={this.onChange} className="form-control inline-select">
                     <option value="all">All</option>
                     {options.map((option) =>
-                        <option key={option.toLowerCase()} value={option.toLowerCase()}>{option}</option>
+                        <option key={option.toLowerCase()} value={option}>{option}</option>
                     )}
                 </select>
             </FormGroup>
         )
     }
 }
-
-export default connect(
-  state => { return {users: state.reducers.users}},
-  {filterByCity}
-)(City)

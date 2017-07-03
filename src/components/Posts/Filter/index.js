@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import City from './City'
+import { City } from './City'
 import { Company } from './Company'
 import { Search } from './Search'
 import { SortBy } from './SortBy'
@@ -12,16 +12,16 @@ export class Filter extends Component {
         return (
             <section className='row'>
                 <Col xs={3}>
-                    <SortBy />
+                    <SortBy onSearch={this.props.onSearch} />
                 </Col>
                 <Col xs={3}>
-                    <City />
+                    <City onSearch={this.props.onSearch} />
                 </Col>
                 <Col xs={4}>
-                    <Company users={[]} />
+                    <Company onSearch={this.props.onSearch} />
                 </Col>
                 <Col xs={2}>
-                    <Search />
+                    <Search onSearch={this.props.onSearch} />
                 </Col>
             </section>
         )
